@@ -25,48 +25,66 @@ class StressController extends Controller
 
     public function submit(Request $request)
     {
-        $data = $request->validate([
-            'q1'              => 'required|integer|min:1|max:5',
-            'q2'              => 'required|integer|min:1|max:5',
-            'q3'              => 'required|integer|min:1|max:5',
-            'q4'              => 'required|integer|min:1|max:5',
-            'q5'              => 'required|integer|min:1|max:5',
-            'q6'              => 'required|integer|min:1|max:5',
-            'q7'              => 'required|integer|min:1|max:5',
-            'q8'              => 'required|integer|min:1|max:5',
-            'q9'              => 'required|integer|min:1|max:5',
-            'q10'             => 'required|integer|min:1|max:5',
-            'text_input'      => 'nullable|string',
-            'time_period'     => 'nullable|string',
-            'academic_period' => 'nullable|string',
-        ]);
+        $rules = [];
 
-        $questionnaire_score =
-            $data['q1'] + $data['q2'] + $data['q3'] + $data['q4'] + $data['q5'] +
-            $data['q6'] + $data['q7'] + $data['q8'] + $data['q9'] + $data['q10'];
+        for ($i = 1; $i <= 5; $i++) {
+            $rules["a$i"] = 'required|integer|min:1|max:5';
+        }
+        for ($i = 1; $i <= 7; $i++) {
+            $rules["b$i"] = 'required|integer|min:1|max:5';
+        }
+        for ($i = 1; $i <= 14; $i++) {
+            $rules["c$i"] = 'required|integer|min:1|max:5';
+        }
 
-        $stress_score = $questionnaire_score;
+        $rules['text_input']      = 'required|string';
+        $rules['time_period']     = 'nullable|string';
+        $rules['academic_period'] = 'nullable|string';
 
-        if ($stress_score <= 20) {
+        $data = $request->validate($rules);
+
+        $general_stress_score =
+            $data['a1'] + $data['a2'] + $data['a3'] +
+            (6 - $data['a4']) + (6 - $data['a5']);
+
+        $tension_score = 0;
+        for ($i = 1; $i <= 7; $i++) {
+            $tension_score += $data["b$i"];
+        }
+
+        $academic_stress_score = 0;
+        for ($i = 1; $i <= 13; $i++) {
+            $academic_stress_score += $data["c$i"];
+        }
+        $academic_stress_score += (6 - $data['c14']);
+
+        $stress_score = $general_stress_score + $tension_score + $academic_stress_score;
+
+        if ($stress_score <= 69) {
             $stress_level = 'Low';
-        } elseif ($stress_score <= 35) {
+        } elseif ($stress_score <= 78) {
             $stress_level = 'Moderate';
-        } else {
+        } elseif ($stress_score <= 87) {
             $stress_level = 'High';
+        } else {
+            $stress_level = 'Very High';
         }
 
         StressRecord::create([
-            'user_id'             => auth()->id(),
-            'questionnaire_score' => $questionnaire_score,
-            'text_input'          => $data['text_input'] ?? null,
-            'stress_score'        => $stress_score,
-            'stress_level'        => $stress_level,
-            'time_period'         => $data['time_period'] ?? null,
-            'academic_period'     => $data['academic_period'] ?? null,
+            'user_id'              => auth()->id(),
+            'general_stress_score' => $general_stress_score,
+            'tension_score'        => $tension_score,
+            'academic_stress_score'=> $academic_stress_score,
+            'questionnaire_score'  => $stress_score,
+            'text_input'           => $data['text_input'],
+            'stress_score'         => $stress_score,
+            'stress_level'         => $stress_level,
+            'time_period'          => $data['time_period'] ?? null,
+            'academic_period'      => $data['academic_period'] ?? null,
         ]);
 
         return redirect()
-            ->route('student.submit')
-            ->with('result', "Stress Level: $stress_level (Score: $stress_score)");
+            ->route('student.dashboard')
+            ->with('result', "Stress Level: $stress_level (Score: $stress_score / 130)");
     }
 }

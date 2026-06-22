@@ -94,7 +94,7 @@
         <p style="text-align:center;font-size:14px;color:#5c6b82;max-width:480px;margin:0 auto 3rem;line-height:1.7;">Built with students in mind — assess, express, and understand your stress in a safe space.</p>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
             @foreach([
-                ['10-Point Assessment','A validated questionnaire measuring stress across ten key academic indicators.','M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zM5 3H3v18l4-4h14a2 2 0 002-2V5a2 2 0 00-2-2H5z'],
+                ['Academic Wellness Assessment','A validated questionnaire measuring stress across ten key academic indicators.','M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zM5 3H3v18l4-4h14a2 2 0 002-2V5a2 2 0 00-2-2H5z'],
                 ['Multilingual Support','Express stress in Yoruba, Pidgin, English or any mix you prefer.','M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z'],
                 ['Wellness Reports','Personalised feedback and trend reports for you and your counsellor.','M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'],
                 ['Period-Aware Tracking','Log your academic period so data is always interpreted in context.','M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23L12.5 13V7z'],
@@ -121,7 +121,7 @@
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;">
                 @foreach([
                     ['1','Create Account','Sign up with your student email in seconds.'],
-                    ['2','Take Assessment','Answer 10 questions in any language you prefer.'],
+                    ['2','Take Assessment','Answer questions in any language you prefer.'],
                     ['3','Get Results','Receive an instant personalised stress report.'],
                     ['4','Access Support','Connect with a counsellor or explore resources.'],
                 ] as [$num, $title, $desc])

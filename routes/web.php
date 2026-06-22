@@ -40,6 +40,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::delete('/user/{id}', [AdminController::class, 'delete'])->name('admin.delete');
+    Route::get('/create-user', [AdminController::class, 'createUser'])->name('admin.create.user');
+    Route::post('/create-user', [AdminController::class, 'storeUser'])->name('admin.store.user');
 });
 
 // Counselor
@@ -53,5 +55,8 @@ Route::middleware(['auth', 'role:management'])->prefix('management')->group(func
     Route::get('/dashboard', [ManagementController::class, 'dashboard'])
         ->name('management.dashboard');
 });
+
+Route::get('/terms', fn() => view('terms'))->name('terms');
+Route::get('/privacy', fn() => view('privacy'))->name('privacy');
 
 require __DIR__.'/auth.php';

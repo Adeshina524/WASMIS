@@ -179,8 +179,9 @@
     </a>
 
     <div class="nav-links">
-        <a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
-        <a href="{{ route('admin.users') }}"     class="nav-link active">Students</a>
+        <a href="{{ route('admin.dashboard') }}"  class="nav-link active">Dashboard</a>
+        <a href="{{ route('admin.users') }}"      class="nav-link">Students</a>
+        <a href="{{ route('admin.create.user') }}" class="nav-link">Create User</a>
     </div>
 
     <div class="nav-right">

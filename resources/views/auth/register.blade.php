@@ -254,7 +254,7 @@
                     <div class="step-badge">2</div>
                     <div>
                         <div class="step-title">Take the assessment</div>
-                        <div class="step-desc">Complete a 10-question stress survey in any language.</div>
+                        <div class="step-desc">Complete a stress survey in any language.</div>
                     </div>
                 </div>
                 <div class="step-item">
