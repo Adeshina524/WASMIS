@@ -48,6 +48,48 @@
         .nav-logout { background: transparent; color: #8fa3bf; border: 1px solid rgba(255,255,255,.15); padding: 7px 16px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; text-decoration: none; transition: all .18s; }
         .nav-logout:hover { color: #fff; border-color: rgba(255,255,255,.35); }
 
+        /* Mobile hamburger */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            background: none;
+            border: none;
+            flex-shrink: 0;
+        }
+        .nav-hamburger span { display: block; width: 22px; height: 2px; background: #8fa3bf; border-radius: 2px; transition: background .18s; }
+        .nav-hamburger:hover span { background: #fff; }
+
+        .nav-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: var(--navy);
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: .75rem 1.25rem 1rem;
+        }
+        .nav-mobile-menu.open { display: flex; }
+        .nav-mobile-user {
+            display: flex; align-items: center; gap: 10px;
+            padding: .5rem 0 .85rem; border-bottom: 1px solid rgba(255,255,255,.07);
+            margin-bottom: .35rem;
+        }
+        .nav-mobile-user span { color: #fff; font-size: 13.5px; font-weight: 500; }
+        .nav-mobile-menu a {
+            color: #8fa3bf; font-size: 14px; padding: .7rem 0;
+            text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.05);
+        }
+        .nav-mobile-menu a:last-of-type { border-bottom: none; }
+        .nav-mobile-menu a.active { color: var(--teal-md); }
+        .nav-mobile-logout {
+            background: rgba(192,57,43,.12); color: #ff8f7d;
+            border: 1px solid rgba(192,57,43,.25);
+            padding: 11px; border-radius: 9px; text-align: center;
+            font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+            cursor: pointer; width: 100%; margin-top: .6rem;
+        }
+
         /* ── PAGE HEADER ── */
         .page-header { background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 55%, #1a5a54 100%); padding: 2.5rem 2rem; position: relative; overflow: hidden; }
         .page-header::before { content: ''; position: absolute; top: -60px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(26,127,116,.13); pointer-events: none; }
@@ -175,7 +217,7 @@
         .role-preview.counselor  { background: var(--teal-lt); color: var(--teal); }
         .role-preview.management { background: var(--amber-lt); color: #b07000; }
         .role-preview.student    { background: var(--green-lt); color: var(--green); }
-        .role-preview span { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+        .role-preview span.role-preview-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
         /* submit */
         .submit-row { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; padding-top: .5rem; }
@@ -190,6 +232,13 @@
         .footer p { font-size: 12px; color: #3d5060; }
         .footer span { color: var(--teal-md); }
 
+        @media (max-width: 900px) {
+            .navbar { padding: 0 1.25rem; }
+            .nav-links { display: none; }
+            .nav-right { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav-sub { display: none; }
+        }
         @media (max-width: 700px) {
             .role-grid    { grid-template-columns: 1fr 1fr; }
             .field-row    { grid-template-columns: 1fr; }
@@ -227,7 +276,26 @@
             <button type="submit" class="nav-logout">Log Out</button>
         </form>
     </div>
+
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
+
+{{-- Mobile dropdown menu --}}
+<div class="nav-mobile-menu" id="mobileMenu">
+    <div class="nav-mobile-user">
+        <div class="nav-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+        <span>{{ auth()->user()->name }}</span>
+    </div>
+    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+    <a href="{{ route('admin.users') }}">Students</a>
+    <a href="{{ route('admin.create.user') }}" class="active">Create User</a>
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" class="nav-mobile-logout">Log Out</button>
+    </form>
+</div>
 
 {{-- PAGE HEADER --}}
 <div class="page-header">
@@ -315,7 +383,7 @@
 
                 {{-- Role preview badge --}}
                 <div class="role-preview student" id="roleBadge">
-                    <span></span>
+                    <span class="role-preview-dot"></span>
                     <span id="roleBadgeText">Student Account</span>
                 </div>
 
@@ -496,6 +564,10 @@
 </footer>
 
 <script>
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
     const roleConfig = {
         student:    { label: 'Student Account',     cls: 'student',    badge: '🎓' },
         counselor:  { label: 'Counsellor Account',  cls: 'counselor',  badge: '🧑‍⚕️' },

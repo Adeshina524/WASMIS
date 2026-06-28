@@ -62,6 +62,7 @@
             padding: .75rem 1.1rem;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 10px;
             margin-top: 1.25rem;
             font-size: 13px;
@@ -205,6 +206,50 @@
         .footer span { color: var(--teal-md); }
 
         @media (max-width: 900px) { .flagged-grid { grid-template-columns: 1fr; } .stat-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 420px) {
+            .navbar { padding: 0 1.25rem; }
+            .nav-sub  { display: none; }
+            .nav-name { display: none; }
+        }
+
+        @media (max-width: 760px) {
+            /* All Student Assessments table → stacked cards */
+            .data-table-wrap { overflow-x: visible; }
+            .data-table { min-width: 0; }
+            .data-table thead { display: none; }
+            .data-table, .data-table tbody, .data-table tr, .data-table td { display: block; width: 100%; }
+            .data-table tbody { padding: .9rem; display: flex; flex-direction: column; gap: .75rem; }
+            .data-table tr {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: .15rem .9rem;
+                box-shadow: 0 1px 6px rgba(13,31,60,.04);
+            }
+            .data-table td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: .75rem;
+                white-space: normal;
+                text-align: right;
+                padding: .6rem 0;
+                border-bottom: 1px solid #f0f2f5;
+            }
+            .data-table td:last-child { border-bottom: none; }
+            .data-table td::before {
+                content: attr(data-label);
+                font-size: 10.5px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .06em;
+                color: var(--muted);
+                flex-shrink: 0;
+                text-align: left;
+            }
+            .data-table td[data-label="#"] { display: none; }
+            .data-table td[data-label="Expression"] { text-align: right; }
+        }
     </style>
 </head>
 <body>
@@ -408,7 +453,7 @@
                 </div>
             </div>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="data-table-wrap" style="overflow-x:auto;">
             @if($allRecords->count() > 0)
             <table class="data-table">
                 <thead>
@@ -427,8 +472,8 @@
                 <tbody>
                     @foreach($allRecords as $i => $record)
                     <tr>
-                        <td style="color:var(--muted);font-size:12px;">{{ $i + 1 }}</td>
-                        <td>
+                        <td data-label="#" style="color:var(--muted);font-size:12px;">{{ $i + 1 }}</td>
+                        <td data-label="Student Name">
                             <div style="display:flex;align-items:center;gap:9px;">
                                 <div style="width:30px;height:30px;border-radius:50%;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--teal);flex-shrink:0;">
                                     {{ strtoupper(substr($record->user->name ?? 'U', 0, 1)) }}
@@ -436,20 +481,20 @@
                                 <span style="font-weight:500;">{{ $record->user->name ?? 'Unknown' }}</span>
                             </div>
                         </td>
-                        <td style="font-size:12.5px;color:var(--muted);">{{ $record->user->matric_no ?? '—' }}</td>
-                        <td style="font-size:12.5px;color:var(--muted);">{{ $record->user->department ?? '—' }}</td>
-                        <td style="font-size:12.5px;color:var(--muted);">{{ $record->user->level ? $record->user->level . 'L' : '—' }}</td>
-                        <td><strong>{{ $record->stress_score }}</strong><span style="color:var(--muted);font-size:12px;">/50</span></td>
-                        <td>
+                        <td data-label="Matric No" style="font-size:12.5px;color:var(--muted);">{{ $record->user->matric_no ?? '—' }}</td>
+                        <td data-label="Department" style="font-size:12.5px;color:var(--muted);">{{ $record->user->department ?? '—' }}</td>
+                        <td data-label="Level" style="font-size:12.5px;color:var(--muted);">{{ $record->user->level ? $record->user->level . 'L' : '—' }}</td>
+                        <td data-label="Score"><strong>{{ $record->stress_score }}</strong><span style="color:var(--muted);font-size:12px;">/50</span></td>
+                        <td data-label="Stress Level">
                             <span class="level-badge {{ strtolower($record->stress_level) }}">
                                 <span class="level-dot"></span>
                                 {{ $record->stress_level }}
                             </span>
                         </td>
-                        <td style="font-size:12px;color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                        <td data-label="Expression" style="font-size:12px;color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                             {{ $record->text_input ? '"' . Str::limit($record->text_input, 40) . '"' : '—' }}
                         </td>
-                        <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $record->created_at->format('d M Y') }}</td>
+                        <td data-label="Date" style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $record->created_at->format('d M Y') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

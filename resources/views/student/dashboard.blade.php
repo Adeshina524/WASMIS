@@ -27,7 +27,7 @@
             --danger-lt:#fff0f0;
         }
 
-        html, body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; }
+        html, body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
         /* ── NAVBAR ── */
         .navbar {
@@ -43,26 +43,27 @@
             box-shadow: 0 1px 0 rgba(255,255,255,.04);
         }
 
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .nav-logo  { width: 38px; height: 38px; background: linear-gradient(135deg, var(--teal), var(--teal3)); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; }
+        .nav-logo  { width: 38px; height: 38px; background: linear-gradient(135deg, var(--teal), var(--teal3)); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .nav-logo svg { width: 20px; height: 20px; fill: #fff; }
         .nav-title { color: #fff; font-size: 15px; font-weight: 600; }
         .nav-sub   { color: #7a96b0; font-size: 10px; text-transform: uppercase; letter-spacing: .09em; }
 
         .nav-links { display: flex; align-items: center; gap: 4px; }
-        .nav-link  { color: #8fa3bf; font-size: 13px; padding: 7px 14px; border-radius: 8px; text-decoration: none; transition: all .18s; }
+        .nav-link  { color: #8fa3bf; font-size: 13px; padding: 7px 14px; border-radius: 8px; text-decoration: none; transition: all .18s; white-space: nowrap; }
         .nav-link:hover { color: #fff; background: rgba(255,255,255,.08); }
         .nav-link.active { color: var(--teal-md); background: rgba(26,127,116,.18); }
 
-        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
         .nav-avatar {
             width: 34px; height: 34px;
             background: linear-gradient(135deg, var(--teal), var(--teal3));
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 13px; font-weight: 600; color: #fff;
+            flex-shrink: 0;
         }
-        .nav-name { color: #8fa3bf; font-size: 13px; }
+        .nav-name { color: #8fa3bf; font-size: 13px; white-space: nowrap; }
 
         .nav-logout {
             background: transparent; color: #8fa3bf;
@@ -70,8 +71,51 @@
             padding: 7px 16px; border-radius: 8px;
             font-family: 'DM Sans', sans-serif; font-size: 13px;
             cursor: pointer; text-decoration: none; transition: all .18s;
+            white-space: nowrap;
         }
         .nav-logout:hover { color: #fff; border-color: rgba(255,255,255,.35); }
+
+        /* Mobile hamburger */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            background: none;
+            border: none;
+            flex-shrink: 0;
+        }
+        .nav-hamburger span { display: block; width: 22px; height: 2px; background: #8fa3bf; border-radius: 2px; transition: background .18s; }
+        .nav-hamburger:hover span { background: #fff; }
+
+        .nav-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: var(--navy);
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: .75rem 1.25rem 1rem;
+        }
+        .nav-mobile-menu.open { display: flex; }
+        .nav-mobile-user {
+            display: flex; align-items: center; gap: 10px;
+            padding: .5rem 0 .85rem; border-bottom: 1px solid rgba(255,255,255,.07);
+            margin-bottom: .35rem;
+        }
+        .nav-mobile-user span { color: #fff; font-size: 13.5px; font-weight: 500; }
+        .nav-mobile-menu a {
+            color: #8fa3bf; font-size: 14px; padding: .7rem 0;
+            text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.05);
+        }
+        .nav-mobile-menu a:last-of-type { border-bottom: none; }
+        .nav-mobile-menu a.active { color: var(--teal-md); }
+        .nav-mobile-logout {
+            background: rgba(192,57,43,.12); color: #ff8f7d;
+            border: 1px solid rgba(192,57,43,.25);
+            padding: 11px; border-radius: 9px; text-align: center;
+            font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+            cursor: pointer; width: 100%; margin-top: .6rem;
+        }
 
         /* ── PAGE HEADER ── */
         .page-header {
@@ -83,9 +127,9 @@
         .page-header::before { content: ''; position: absolute; top: -60px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(26,127,116,.13); pointer-events: none; }
         .page-header::after  { content: ''; position: absolute; bottom: -60px; left: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(232,160,39,.08); pointer-events: none; }
         .page-header-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
-        .page-header-left {}
+        .page-header-left { min-width: 0; }
         .page-header-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-md); margin-bottom: .4rem; }
-        .page-header-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; line-height: 1.2; margin-bottom: .3rem; }
+        .page-header-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 5vw, 2rem); color: #fff; line-height: 1.25; margin-bottom: .3rem; word-wrap: break-word; }
         .page-header-title em { font-style: italic; color: var(--teal-md); }
         .page-header-sub { font-size: 13.5px; color: #8fa3bf; }
         .btn-start {
@@ -98,7 +142,7 @@
             transition: all .2s; white-space: nowrap;
         }
         .btn-start:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(26,127,116,.45); }
-        .btn-start svg { width: 16px; height: 16px; fill: #fff; }
+        .btn-start svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
 
         /* ── MAIN ── */
         .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
@@ -116,6 +160,7 @@
             gap: 1rem;
             box-shadow: 0 2px 12px rgba(13,31,60,.05);
             transition: all .2s;
+            min-width: 0;
         }
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,31,60,.09); }
 
@@ -130,8 +175,8 @@
         .si-navy   { background: #eef1f6; }
         .si-navy svg { fill: var(--navy); }
 
-        .stat-info {}
-        .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy); line-height: 1; }
+        .stat-info { min-width: 0; }
+        .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy); line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .stat-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
         /* ── TWO COL ── */
@@ -139,7 +184,8 @@
 
         /* ── CARDS ── */
         .card { background: #fff; border-radius: 18px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 2px 14px rgba(13,31,60,.05); }
-        .card-header { background: linear-gradient(90deg, var(--teal-lt), #f0faf9); padding: 1.1rem 1.4rem; border-bottom: 1px solid #c8e8e4; display: flex; align-items: center; gap: 12px; }
+        .card-header { background: linear-gradient(90deg, var(--teal-lt), #f0faf9); padding: 1.1rem 1.4rem; border-bottom: 1px solid #c8e8e4; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .card-header > div:last-child { min-width: 0; }
         .card-icon { width: 38px; height: 38px; background: var(--teal); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .card-icon svg { width: 18px; height: 18px; fill: #fff; }
         .card-title    { font-size: 14px; font-weight: 600; color: var(--navy); }
@@ -156,17 +202,19 @@
             margin: 0 auto 1rem;
             border: 4px solid;
         }
-        .stress-circle.low      { background: #e8f9f0; border-color: #27ae60; }
-        .stress-circle.moderate { background: var(--amber-lt); border-color: var(--amber); }
-        .stress-circle.high     { background: var(--danger-lt); border-color: var(--danger); }
-        .stress-circle.none     { background: #f0f2f5; border-color: var(--border); }
+        .stress-circle.mild      { background: #e8f9f0; border-color: #27ae60; }
+        .stress-circle.moderate  { background: var(--amber-lt); border-color: var(--amber); }
+        .stress-circle.high      { background: #ffe8e0; border-color: #e8743a; }
+        .stress-circle.severe    { background: var(--danger-lt); border-color: var(--danger); }
+        .stress-circle.none      { background: #f0f2f5; border-color: var(--border); }
 
         .stress-circle-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
         .stress-circle-value { font-family: 'DM Serif Display', serif; font-size: 1.4rem; line-height: 1.1; }
-        .stress-circle.low      .stress-circle-value { color: #27ae60; }
-        .stress-circle.moderate .stress-circle-value { color: var(--amber); }
-        .stress-circle.high     .stress-circle-value { color: var(--danger); }
-        .stress-circle.none     .stress-circle-value { color: var(--muted); }
+        .stress-circle.mild      .stress-circle-value { color: #27ae60; }
+        .stress-circle.moderate  .stress-circle-value { color: var(--amber); }
+        .stress-circle.high      .stress-circle-value { color: #e8743a; }
+        .stress-circle.severe    .stress-circle-value { color: var(--danger); }
+        .stress-circle.none      .stress-circle-value { color: var(--muted); }
 
         .stress-score-text { font-size: 13px; color: var(--muted); margin-bottom: 1rem; }
         .stress-score-text strong { color: var(--text); }
@@ -174,10 +222,11 @@
         .stress-bar-wrap { margin: 0 1rem; }
         .stress-bar-track { background: #e8ecf1; border-radius: 6px; height: 8px; overflow: hidden; margin-bottom: .4rem; }
         .stress-bar-fill  { height: 100%; border-radius: 6px; transition: width .5s ease; }
-        .stress-bar-fill.low      { background: #27ae60; }
-        .stress-bar-fill.moderate { background: var(--amber); }
-        .stress-bar-fill.high     { background: var(--danger); }
-        .stress-bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: #c0cad5; }
+        .stress-bar-fill.mild      { background: #27ae60; }
+        .stress-bar-fill.moderate  { background: var(--amber); }
+        .stress-bar-fill.high      { background: #e8743a; }
+        .stress-bar-fill.severe    { background: var(--danger); }
+        .stress-bar-labels { display: flex; justify-content: space-between; font-size: 9.5px; color: #c0cad5; }
 
         .stress-recommendation {
             background: var(--teal-lt);
@@ -202,12 +251,12 @@
 
         /* ── PROFILE CARD ── */
         .profile-info { display: flex; flex-direction: column; gap: .75rem; }
-        .profile-row  { display: flex; align-items: center; gap: 10px; padding: .6rem 0; border-bottom: 1px solid #f0f2f5; }
+        .profile-row  { display: flex; align-items: center; gap: 10px; padding: .6rem 0; border-bottom: 1px solid #f0f2f5; min-width: 0; }
         .profile-row:last-child { border-bottom: none; }
         .profile-row-icon { width: 32px; height: 32px; background: var(--teal-lt); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .profile-row-icon svg { width: 15px; height: 15px; fill: var(--teal); }
         .profile-row-label { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #c0cad5; }
-        .profile-row-value { font-size: 13.5px; color: var(--text); font-weight: 500; }
+        .profile-row-value { font-size: 13.5px; color: var(--text); font-weight: 500; word-break: break-word; }
 
         .role-badge {
             display: inline-flex; align-items: center; gap: 5px;
@@ -216,27 +265,29 @@
             padding: 3px 10px; border-radius: 20px;
             text-transform: capitalize;
         }
-        .role-badge span { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+        .role-badge span { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
 
         /* ── HISTORY TABLE ── */
-        .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); padding: .6rem .75rem; border-bottom: 2px solid var(--border); text-align: left; }
-        .history-table td { font-size: 13px; color: var(--text); padding: .85rem .75rem; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
+        .history-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .history-table { width: 100%; border-collapse: collapse; min-width: 460px; }
+        .history-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); padding: .6rem .75rem; border-bottom: 2px solid var(--border); text-align: left; white-space: nowrap; }
+        .history-table td { font-size: 13px; color: var(--text); padding: .85rem .75rem; border-bottom: 1px solid #f0f2f5; vertical-align: middle; white-space: nowrap; }
         .history-table tr:last-child td { border-bottom: none; }
         .history-table tr:hover td { background: #fafffe; }
 
-        .level-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
-        .level-badge.low      { background: #e8f9f0; color: #27ae60; }
-        .level-badge.moderate { background: var(--amber-lt); color: #b07000; }
-        .level-badge.high     { background: var(--danger-lt); color: var(--danger); }
-        .level-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .level-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+        .level-badge.mild      { background: #e8f9f0; color: #27ae60; }
+        .level-badge.moderate  { background: var(--amber-lt); color: #b07000; }
+        .level-badge.high      { background: #ffe8e0; color: #c2540e; }
+        .level-badge.severe    { background: var(--danger-lt); color: var(--danger); }
+        .level-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
         .empty-history { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 13px; }
         .empty-history svg { width: 36px; height: 36px; fill: #c0cad5; display: block; margin: 0 auto .75rem; }
 
         /* ── TIPS CARD ── */
         .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-        .tip-item  { background: var(--sand); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+        .tip-item  { background: var(--sand); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; min-width: 0; }
         .tip-icon  { font-size: 1.4rem; margin-bottom: .4rem; }
         .tip-title { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-bottom: .25rem; }
         .tip-desc  { font-size: 12px; color: var(--muted); line-height: 1.55; }
@@ -246,14 +297,85 @@
         .footer p { font-size: 12px; color: #3d5060; }
         .footer span { color: var(--teal-md); }
 
-        /* ── RESPONSIVE ── */
+        /* ══════════════════════ RESPONSIVE ══════════════════════ */
+
         @media (max-width: 900px) {
             .stat-grid { grid-template-columns: repeat(2, 1fr); }
             .two-col   { grid-template-columns: 1fr; }
         }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 0 1.25rem; }
+            .nav-links { display: none; }
+            .nav-name  { display: none; }
+            .nav-logout { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav-title { font-size: 14px; }
+            .nav-sub   { display: none; }
+
+            .page-header { padding: 1.75rem 1.25rem; }
+            .page-header-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .btn-start { width: 100%; justify-content: center; }
+        }
+
         @media (max-width: 540px) {
-            .stat-grid { grid-template-columns: 1fr 1fr; }
+            .stat-grid { grid-template-columns: 1fr 1fr; gap: .75rem; }
+            .stat-card { padding: 1rem; gap: .75rem; }
+            .stat-icon { width: 38px; height: 38px; }
+            .stat-icon svg { width: 18px; height: 18px; }
+            .stat-value { font-size: 1.25rem; }
+            .stat-label { font-size: 10.5px; }
+
             .tips-grid { grid-template-columns: 1fr; }
+            .main { padding: 1.5rem 1rem 3rem; }
+            .card-body { padding: 1.1rem; }
+            .card-header { padding: 1rem 1.1rem; }
+
+            .stress-circle { width: 100px; height: 100px; }
+            .stress-circle-value { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .stat-grid { grid-template-columns: 1fr; }
+            .stat-card { padding: .9rem 1rem; }
+            .stat-value { white-space: normal; overflow: visible; text-overflow: unset; word-break: break-word; }
+        }
+
+        /* History table → stacked cards on small screens */
+        @media (max-width: 640px) {
+            .history-table-wrap { overflow-x: visible; }
+            .history-table { min-width: 0; }
+            .history-table thead { display: none; }
+            .history-table, .history-table tbody, .history-table tr, .history-table td { display: block; width: 100%; }
+            .history-table tbody { padding: .9rem; display: flex; flex-direction: column; gap: .75rem; }
+            .history-table tr {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: .15rem .9rem;
+                box-shadow: 0 1px 6px rgba(13,31,60,.04);
+            }
+            .history-table td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: .75rem;
+                white-space: normal;
+                text-align: right;
+                padding: .55rem 0;
+                border-bottom: 1px solid #f0f2f5;
+            }
+            .history-table td:last-child { border-bottom: none; }
+            .history-table td::before {
+                content: attr(data-label);
+                font-size: 10.5px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .06em;
+                color: var(--muted);
+                flex-shrink: 0;
+                text-align: left;
+            }
+            .history-table td[data-label="#"] { display: none; }
         }
     </style>
 </head>
@@ -284,7 +406,25 @@
             <button type="submit" class="nav-logout">Log Out</button>
         </form>
     </div>
+
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
+
+{{-- Mobile dropdown menu --}}
+<div class="nav-mobile-menu" id="mobileMenu">
+    <div class="nav-mobile-user">
+        <div class="nav-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+        <span>{{ $user->name }}</span>
+    </div>
+    <a href="{{ route('student.dashboard') }}" class="active">Dashboard</a>
+    <a href="{{ route('student.submit') }}">Assessment</a>
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" class="nav-mobile-logout">Log Out</button>
+    </form>
+</div>
 
 {{-- ── PAGE HEADER ── --}}
 <div class="page-header">
@@ -330,8 +470,17 @@
             </div>
         </div>
 
+        @php
+            $latestLevelLower = $latest ? strtolower($latest->stress_level) : null;
+            $latestIconClass = match($latestLevelLower) {
+                'severe' => 'si-red',
+                'high'   => 'si-red',
+                'moderate' => 'si-amber',
+                default  => 'si-teal',
+            };
+        @endphp
         <div class="stat-card">
-            <div class="stat-icon {{ $latest && $latest->stress_level === 'High' ? 'si-red' : ($latest && $latest->stress_level === 'Moderate' ? 'si-amber' : 'si-teal') }}">
+            <div class="stat-icon {{ $latestIconClass }}">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
             </div>
             <div class="stat-info">
@@ -373,29 +522,31 @@
                         @php
                             $level = strtolower($latest->stress_level);
                             $score = $latest->stress_score;
-                            $pct   = min(round($score / 50 * 100), 100);
+                            $pct   = min(round($score / 142 * 100), 100);
                         @endphp
                         <div class="stress-display">
                             <div class="stress-circle {{ $level }}">
                                 <span class="stress-circle-label">Level</span>
                                 <span class="stress-circle-value">{{ $latest->stress_level }}</span>
                             </div>
-                            <p class="stress-score-text">Score: <strong>{{ $score }} / 50</strong></p>
+                            <p class="stress-score-text">Score: <strong>{{ $score }} / 142</strong></p>
                             <div class="stress-bar-wrap">
                                 <div class="stress-bar-track">
                                     <div class="stress-bar-fill {{ $level }}" style="width:{{ $pct }}%;"></div>
                                 </div>
-                                <div class="stress-bar-labels"><span>Low</span><span>Moderate</span><span>High</span></div>
+                                <div class="stress-bar-labels"><span>Mild</span><span>Moderate</span><span>High</span><span>Severe</span></div>
                             </div>
                         </div>
                         <div class="stress-recommendation">
                             <strong>💡 Recommendation</strong>
-                            @if($level === 'low')
+                            @if($level === 'mild')
                                 You're managing stress well. Keep maintaining healthy study habits, regular breaks, and good sleep.
                             @elseif($level === 'moderate')
                                 Consider speaking with a counsellor. Try time management techniques and don't hesitate to ask for support.
+                            @elseif($level === 'high')
+                                Your stress level is high. We recommend connecting with a counsellor soon and prioritising rest where possible.
                             @else
-                                Your stress level is high. We strongly recommend connecting with a counsellor as soon as possible. You are not alone.
+                                Your stress level is severe. We strongly recommend connecting with a counsellor as soon as possible. You are not alone.
                             @endif
                         </div>
                     @else
@@ -505,6 +656,7 @@
                 </div>
                 <div class="card-body" style="padding:0;">
                     @if($records->count() > 0)
+                    <div class="history-table-wrap">
                     <table class="history-table">
                         <thead>
                             <tr>
@@ -518,22 +670,23 @@
                         <tbody>
                             @foreach($records->take(8) as $i => $record)
                             <tr>
-                                <td style="color:var(--muted);font-size:12px;">{{ $i + 1 }}</td>
-                                <td>{{ $record->created_at->format('d M Y') }}<br><span style="font-size:11px;color:var(--muted);">{{ $record->created_at->format('h:i A') }}</span></td>
-                                <td><strong>{{ $record->stress_score }}</strong><span style="color:var(--muted);font-size:12px;">/50</span></td>
-                                <td>
+                                <td data-label="#" style="color:var(--muted);font-size:12px;">{{ $i + 1 }}</td>
+                                <td data-label="Date">{{ $record->created_at->format('d M Y') }}<br><span style="font-size:11px;color:var(--muted);">{{ $record->created_at->format('h:i A') }}</span></td>
+                                <td data-label="Score"><strong>{{ $record->stress_score }}</strong><span style="color:var(--muted);font-size:12px;">/142</span></td>
+                                <td data-label="Level">
                                     <span class="level-badge {{ strtolower($record->stress_level) }}">
                                         <span class="level-dot"></span>
                                         {{ $record->stress_level }}
                                     </span>
                                 </td>
-                                <td style="font-size:12px;color:var(--muted);text-transform:capitalize;">
+                                <td data-label="Period" style="font-size:12px;color:var(--muted);text-transform:capitalize;">
                                     {{ $record->academic_period ?? '—' }}
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                     @else
                     <div class="empty-history">
                         <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
@@ -588,6 +741,12 @@
 <footer class="footer">
     <p>&copy; {{ date('Y') }} WASMIS &mdash; Built for <span>student wellbeing</span></p>
 </footer>
+
+<script>
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('open');
+    }
+</script>
 
 </body>
 </html>

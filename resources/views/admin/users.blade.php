@@ -48,6 +48,48 @@
         .nav-logout { background: transparent; color: #8fa3bf; border: 1px solid rgba(255,255,255,.15); padding: 7px 16px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; text-decoration: none; transition: all .18s; }
         .nav-logout:hover { color: #fff; border-color: rgba(255,255,255,.35); }
 
+        /* Mobile hamburger */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            background: none;
+            border: none;
+            flex-shrink: 0;
+        }
+        .nav-hamburger span { display: block; width: 22px; height: 2px; background: #8fa3bf; border-radius: 2px; transition: background .18s; }
+        .nav-hamburger:hover span { background: #fff; }
+
+        .nav-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: var(--navy);
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: .75rem 1.25rem 1rem;
+        }
+        .nav-mobile-menu.open { display: flex; }
+        .nav-mobile-user {
+            display: flex; align-items: center; gap: 10px;
+            padding: .5rem 0 .85rem; border-bottom: 1px solid rgba(255,255,255,.07);
+            margin-bottom: .35rem;
+        }
+        .nav-mobile-user span { color: #fff; font-size: 13.5px; font-weight: 500; }
+        .nav-mobile-menu a {
+            color: #8fa3bf; font-size: 14px; padding: .7rem 0;
+            text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.05);
+        }
+        .nav-mobile-menu a:last-of-type { border-bottom: none; }
+        .nav-mobile-menu a.active { color: var(--teal-md); }
+        .nav-mobile-logout {
+            background: rgba(192,57,43,.12); color: #ff8f7d;
+            border: 1px solid rgba(192,57,43,.25);
+            padding: 11px; border-radius: 9px; text-align: center;
+            font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+            cursor: pointer; width: 100%; margin-top: .6rem;
+        }
+
         /* ── PAGE HEADER ── */
         .page-header { background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 55%, #1a5a54 100%); padding: 2.5rem 2rem; position: relative; overflow: hidden; }
         .page-header::before { content: ''; position: absolute; top: -60px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(26,127,116,.13); pointer-events: none; }
@@ -161,7 +203,54 @@
         .footer p { font-size: 12px; color: #3d5060; }
         .footer span { color: var(--teal-md); }
 
+        @media (max-width: 900px) {
+            .navbar { padding: 0 1.25rem; }
+            .nav-links { display: none; }
+            .nav-right { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav-sub { display: none; }
+        }
+        @media (max-width: 760px) {
+            .search-wrap { width: 100%; }
+            .search-wrap input { width: 100%; }
+
+            /* Students table → stacked cards */
+            .data-table-wrap { overflow-x: visible; }
+            .data-table { min-width: 0; }
+            .data-table thead { display: none; }
+            .data-table, .data-table tbody, .data-table tr, .data-table td { display: block; width: 100%; }
+            .data-table tbody { padding: .9rem; display: flex; flex-direction: column; gap: .75rem; }
+            .data-table tr {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: .15rem .9rem;
+                box-shadow: 0 1px 6px rgba(13,31,60,.04);
+            }
+            .data-table td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: .75rem;
+                white-space: normal;
+                text-align: right;
+                padding: .6rem 0;
+                border-bottom: 1px solid #f0f2f5;
+            }
+            .data-table td:last-child { border-bottom: none; }
+            .data-table td::before {
+                content: attr(data-label);
+                font-size: 10.5px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .06em;
+                color: var(--muted);
+                flex-shrink: 0;
+                text-align: left;
+            }
+            .data-table td[data-label="#"] { display: none; }
+        }
         @media (max-width: 700px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -192,7 +281,26 @@
             <button type="submit" class="nav-logout">Log Out</button>
         </form>
     </div>
+
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
+
+{{-- Mobile dropdown menu --}}
+<div class="nav-mobile-menu" id="mobileMenu">
+    <div class="nav-mobile-user">
+        <div class="nav-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+        <span>{{ auth()->user()->name }}</span>
+    </div>
+    <a href="{{ route('admin.dashboard') }}" class="active">Dashboard</a>
+    <a href="{{ route('admin.users') }}">Students</a>
+    <a href="{{ route('admin.create.user') }}">Create User</a>
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" class="nav-mobile-logout">Log Out</button>
+    </form>
+</div>
 
 {{-- PAGE HEADER --}}
 <div class="page-header">
@@ -285,7 +393,7 @@
             </div>
         </div>
 
-        <div style="overflow-x:auto;">
+        <div class="data-table-wrap" style="overflow-x:auto;">
             @if($users->count() > 0)
             <table class="data-table" id="studentsTable">
                 <thead>
@@ -309,8 +417,8 @@
                         $totalRecords = $student->stressRecords->count();
                     @endphp
                     <tr>
-                        <td style="color:var(--muted);font-size:12px;">{{ $i + 1 }}</td>
-                        <td>
+                        <td data-label="#" style="color:var(--muted);font-size:12px;">{{ $i + 1 }}</td>
+                        <td data-label="Student">
                             <div style="display:flex;align-items:center;gap:10px;">
                                 <div style="width:34px;height:34px;border-radius:50%;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--teal);flex-shrink:0;">
                                     S{{ $i + 1 }}
@@ -321,22 +429,22 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="color:var(--muted);font-size:13px;">Confidential</td>
-                        <td style="font-size:13px;">Confidential</td>
-                        <td>
+                        <td data-label="Identity" style="color:var(--muted);font-size:13px;">Confidential</td>
+                        <td data-label="Matric No" style="font-size:13px;">Confidential</td>
+                        <td data-label="Assessments">
                             <div style="display:flex;align-items:center;gap:6px;">
                                 <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);">{{ $totalRecords }}</span>
                                 <span style="font-size:11.5px;color:var(--muted);">{{ $totalRecords === 1 ? 'assessment' : 'assessments' }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Latest Level">
                             <span class="level-badge {{ $latestLevel }}">
                                 <span class="level-dot"></span>
                                 {{ $latestLabel }}
                             </span>
                         </td>
-                        <td style="font-size:12.5px;color:var(--muted);">{{ $student->created_at->format('d M Y') }}</td>
-                        <td>
+                        <td data-label="Joined" style="font-size:12.5px;color:var(--muted);">{{ $student->created_at->format('d M Y') }}</td>
+                        <td data-label="Action">
                             <button
                                 class="btn-delete"
                                 onclick="confirmDelete({{ $student->id }}, '{{ addslashes($student->name) }}')"
@@ -387,6 +495,10 @@
 </footer>
 
 <script>
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
     // Search
     function searchTable() {
         const input  = document.getElementById('searchInput').value.toLowerCase();

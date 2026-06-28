@@ -153,6 +153,48 @@
         @media (max-width: 1100px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 900px)  { .two-col { grid-template-columns: 1fr; } .three-col { grid-template-columns: 1fr; } }
         @media (max-width: 600px)  { .stat-grid { grid-template-columns: repeat(2, 1fr); } .period-grid { grid-template-columns: 1fr; } .policy-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 420px) {
+            .navbar { padding: 0 1.25rem; }
+            .nav-sub  { display: none; }
+            .nav-name { display: none; }
+        }
+
+        @media (max-width: 760px) {
+            /* Faculty Stress Report table → stacked cards */
+            .data-table-wrap { overflow-x: visible; }
+            .data-table { min-width: 0; }
+            .data-table thead { display: none; }
+            .data-table, .data-table tbody, .data-table tr, .data-table td { display: block; width: 100%; }
+            .data-table tbody { padding: .9rem; display: flex; flex-direction: column; gap: .75rem; }
+            .data-table tr {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: .15rem .9rem;
+                box-shadow: 0 1px 6px rgba(13,31,60,.04);
+            }
+            .data-table td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: .75rem;
+                white-space: normal;
+                text-align: right;
+                padding: .6rem 0;
+                border-bottom: 1px solid #f0f2f5;
+            }
+            .data-table td:last-child { border-bottom: none; }
+            .data-table td::before {
+                content: attr(data-label);
+                font-size: 10.5px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .06em;
+                color: var(--muted);
+                flex-shrink: 0;
+                text-align: left;
+            }
+            .data-table td[data-label="#"] { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -504,7 +546,7 @@
                 <div class="card-subtitle">Aggregated data per faculty — for policy decisions</div>
             </div>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="data-table-wrap" style="overflow-x:auto;">
             @if($stressByFaculty->count() > 0)
             <table class="data-table">
                 <thead>
@@ -526,20 +568,20 @@
                         $riskLabel = $highPctFaculty >= 40 ? 'High Concern' : ($highPctFaculty >= 20 ? 'Monitor' : 'Stable');
                     @endphp
                     <tr>
-                        <td style="color:var(--muted);font-size:12px;">{{ $loop->iteration }}</td>
-                        <td style="font-weight:500;">{{ $faculty }}</td>
-                        <td>{{ $data['total'] }}</td>
-                        <td>{{ $data['high'] }}</td>
-                        <td>
-                            <div style="display:flex;align-items:center;gap:8px;">
+                        <td data-label="#" style="color:var(--muted);font-size:12px;">{{ $loop->iteration }}</td>
+                        <td data-label="Faculty" style="font-weight:500;">{{ $faculty }}</td>
+                        <td data-label="Students">{{ $data['total'] }}</td>
+                        <td data-label="High Risk Count">{{ $data['high'] }}</td>
+                        <td data-label="High Risk %">
+                            <div style="display:flex;align-items:center;gap:8px;width:130px;">
                                 <div style="flex:1;background:#e8ecf1;border-radius:4px;height:6px;overflow:hidden;max-width:80px;">
                                     <div style="height:100%;border-radius:4px;background:{{ $highPctFaculty >= 40 ? 'var(--danger)' : ($highPctFaculty >= 20 ? 'var(--amber)' : 'var(--green)') }};width:{{ $highPctFaculty }}%;"></div>
                                 </div>
                                 <span style="font-size:12px;">{{ $highPctFaculty }}%</span>
                             </div>
                         </td>
-                        <td><strong>{{ $data['avg'] ?: '—' }}</strong><span style="color:var(--muted);font-size:11px;">/50</span></td>
-                        <td><span class="risk-indicator {{ $riskClass }}">{{ $riskLabel }}</span></td>
+                        <td data-label="Avg Score"><strong>{{ $data['avg'] ?: '—' }}</strong><span style="color:var(--muted);font-size:11px;">/50</span></td>
+                        <td data-label="Risk Level"><span class="risk-indicator {{ $riskClass }}">{{ $riskLabel }}</span></td>
                     </tr>
                     @endforeach
                 </tbody>
