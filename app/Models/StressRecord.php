@@ -19,10 +19,17 @@ class StressRecord extends Model
     'stress_level',
     'time_period',
     'academic_period',
+    'assigned_counselor_id',
+    'assigned_at',
 ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+public function assignedCounselor()
+{
+    return $this->belongsTo(User::class, 'assigned_counselor_id');
+}
 }

@@ -46,8 +46,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
 // Counselor
 Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->group(function () {
-    Route::get('/dashboard', [CounsellorController::class, 'dashboard'])
-        ->name('counselor.dashboard');
+    Route::get('/dashboard', [CounsellorController::class, 'dashboard'])->name('counselor.dashboard');
+    Route::post('/claim/{record}', [CounsellorController::class, 'claimCase'])->name('counselor.claim'); // ← add this
 });
 
 // Management

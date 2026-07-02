@@ -355,7 +355,7 @@
                     <div class="card-title">Section C — Academic Stressors</div>
                     <div class="card-subtitle cs-purple">Rate how much each factor affects you</div>
                 </div>
-                <span class="section-progress sp-purple" id="sectionCBadge">0/14</span>
+                <span class="section-progress sp-purple" id="sectionCBadge">0/7</span>
             </div>
             <div class="card-body">
                 <div class="legend">
@@ -375,15 +375,8 @@
                         "Poor internet / connectivity for online learning resources",
                         "Lack of time for rest, recreation, or personal activities",
                         "Uncertainty about future employment prospects after graduation",
-                        "I find it difficult to concentrate on my studies",
-                        "I feel mentally exhausted after studying",
-                        "I lose motivation to study",
-                        "I procrastinate on academic tasks",
-                        "I feel I have no one to talk to about my academic struggles",
-                        "I feel isolated from friends and family because of schoolwork",
-                        "I feel I am able to manage my academic workload well",
                     ];
-                    $reverseC = [14];
+                    $reverseC = [];
                 @endphp
 
                 <div id="sectionCQuestions">
